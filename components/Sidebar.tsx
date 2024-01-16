@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const routes = [
   {
@@ -58,6 +59,8 @@ const routes = [
 ];
 
 function Sidebar() {
+  const pathname = usePathname();
+
   return (
     <div className="flex flex-col text-white space-y-5 bg-[#111827] h-full">
       <div className="px-5 py-3">
@@ -72,7 +75,10 @@ function Sidebar() {
             <Link
               href={route.href}
               key={route.label}
-              className="text-sm flex p-3 w-full justify-start font-medium cursor-pointer hover:bg-slate-700 rounded-lg"
+              className={cn(
+                "text-sm flex p-3 w-full justify-start font-medium cursor-pointer hover:bg-slate-700 rounded-lg",
+                route.href === pathname ? "bg-slate-600" : "text-zinc-400"
+              )}
             >
               <div className="flex items-center flex-1">
                 <route.icon className={cn("mr-3 w-4 h-4", route.color)} />
