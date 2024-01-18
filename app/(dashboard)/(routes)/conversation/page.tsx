@@ -15,6 +15,9 @@ import { useRouter } from "next/navigation";
 import { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 import Empty from "@/components/Empty";
 import Loader from "@/components/Loader";
+import { cn } from "@/lib/utils";
+import UserAvatar from "@/components/UserAvatar";
+import BotAvatar from "@/components/BotAvatar";
 
 function ConversationPage() {
   const [messages, setMessages] = useState<ChatCompletionMessageParam[]>([]);
@@ -89,7 +92,7 @@ function ConversationPage() {
           </Form>
         </div>
         <div className="space-y-4 mt-4">
-          {true && (
+          {loading && (
             <div className="gap-y-10 mx-auto w-full flex items-center justify-center">
               <Loader />
             </div>
@@ -99,7 +102,18 @@ function ConversationPage() {
           )}
           <div className="flex flex-col-reverse gap-y-4">
             {messages.map((message, idx) => (
-              <div key={idx}>{message.content as string}</div>
+              <div
+                key={idx}
+                className={cn(
+                  "rounded-lg flex p-4 items-center",
+                  message.role === "user"
+                    ? "bg-white border-black/10"
+                    : "bg-muted"
+                )}
+              >
+                {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
+                <p className="text-sm pl-3">{message.content as string}</p>
+              </div>
             ))}
           </div>
         </div>
