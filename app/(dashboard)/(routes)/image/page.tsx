@@ -1,7 +1,7 @@
 "use client";
 
 import Heading from "@/components/Heading";
-import { ImageIcon } from "lucide-react";
+import { Download, ImageIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { amountOptions, formSchema, resolutionOptions } from "./constants";
@@ -22,6 +22,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Card, CardFooter } from "@/components/ui/card";
+import Image from "next/image";
 
 function ImagePage() {
   const router = useRouter();
@@ -153,7 +155,22 @@ function ImagePage() {
           {images.length === 0 && !loading && (
             <Empty label="No Images generated." />
           )}
-          <div>Images will be rendered here.</div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-6">
+            {images.map((image) => (
+              <Card key={image} className="">
+                <Image src={image} alt="image" fill />
+                <CardFooter className="p-2">
+                  <Button
+                    variant="secondary"
+                    onClick={() => window.open(image)}
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Download
+                  </Button>
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
         </div>
       </div>
     </div>
