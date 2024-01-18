@@ -43,5 +43,5 @@ export const resolutionOptions = [
     {
         value: "1024x1024",
         label: "1024x1024",
-    }
+    },
 ]

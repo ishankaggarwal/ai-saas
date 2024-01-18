@@ -157,12 +157,13 @@ function ImagePage() {
           )}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-6">
             {images.map((image) => (
-              <Card key={image} className="">
-                <Image src={image} alt="image" fill />
+              <Card key={image} className="rounded-lg">
+                <Image src={image} alt="image" width={1000} height={1000} />
                 <CardFooter className="p-2">
                   <Button
                     variant="secondary"
                     onClick={() => window.open(image)}
+                    className="w-full"
                   >
                     <Download className="w-4 h-4 mr-2" />
                     Download

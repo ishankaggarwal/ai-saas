@@ -20,13 +20,11 @@ export async function POST(
         if(!prompt) return NextResponse.json({status:400, error: "Prompt is required"});
 
         const response = await openai.images.generate({
-            model: "dall-e-3",
+            model: "dall-e-2",
             prompt,
             n: parseInt(amount),
             size: resolution,           
         });
-
-        console.log("------response------",response);
 
         return NextResponse.json(response.data);
 
