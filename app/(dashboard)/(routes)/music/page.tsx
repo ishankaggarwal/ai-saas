@@ -4,7 +4,6 @@ import Heading from "@/components/Heading";
 import { Music } from "lucide-react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { formSchema } from "./constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -14,6 +13,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import Empty from "@/components/Empty";
 import Loader from "@/components/Loader";
+import { formSchema } from "./constants";
 
 function MusicPage() {
   const [music, setMusic] = useState<string>("");
@@ -34,8 +34,7 @@ function MusicPage() {
         values,
       });
 
-      setMusic(response.data.audio);
-
+      setMusic(response.data);
       form.reset();
     } catch (error: any) {
       //TODO : open pro modal
@@ -89,7 +88,13 @@ function MusicPage() {
             </div>
           )}
           {music === "" && !loading && <Empty label="No music generated." />}
-          <div>Music will pop here.</div>
+          <div>
+            {music && (
+              <audio controls className="mt-8 w-full">
+                <source src={music} />
+              </audio>
+            )}
+          </div>
         </div>
       </div>
     </div>
