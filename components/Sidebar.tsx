@@ -13,6 +13,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import ApiCounter from "@/components/ApiCounter";
 
 const routes = [
   {
@@ -58,11 +59,11 @@ const routes = [
   },
 ];
 
-function Sidebar() {
+function Sidebar({ apiLimitCount = 0 }: { apiLimitCount: number }) {
   const pathname = usePathname();
 
   return (
-    <div className="flex flex-col text-white space-y-5 bg-[#111827] h-full">
+    <div className="flex flex-col justify-between text-white space-y-5 bg-[#111827] h-full">
       <div className="px-5 py-3">
         <Link href="/dashboard" className="flex items-center gap-10 pl-4 mb-10">
           <div className="flex gap-2 items-center">
@@ -88,6 +89,7 @@ function Sidebar() {
           ))}
         </div>
       </div>
+      <ApiCounter apiLimitCount={apiLimitCount} />
     </div>
   );
 }
