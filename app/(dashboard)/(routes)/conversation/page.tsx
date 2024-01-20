@@ -18,8 +18,10 @@ import Loader from "@/components/Loader";
 import { cn } from "@/lib/utils";
 import UserAvatar from "@/components/UserAvatar";
 import BotAvatar from "@/components/BotAvatar";
+import { useProModal } from "@/hooks/useProModal";
 
 function ConversationPage() {
+  const proModal = useProModal();
   const [messages, setMessages] = useState<ChatCompletionMessageParam[]>([]);
   const router = useRouter();
 
@@ -42,13 +44,13 @@ function ConversationPage() {
         messages: values.prompt,
       });
 
-      console.log("---resonse.data------", response.data);
-
       setMessages((prev) => [...prev, response.data, userMessage]);
       form.reset();
     } catch (error: any) {
-      //TODO : open pro modal
-      console.log(error);
+      if (error?.response?.status === 403) {
+        proModal.onOpen();
+      }
+      form.reset();
     } finally {
       router.refresh();
     }

@@ -6,8 +6,10 @@ import { MAX_FREE_API_LIMIT } from "@/constants";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Zap } from "lucide-react";
+import { useProModal } from "@/hooks/useProModal";
 
 function ApiCounter({ apiLimitCount }: { apiLimitCount: number }) {
+  const proModal = useProModal();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -26,7 +28,11 @@ function ApiCounter({ apiLimitCount }: { apiLimitCount: number }) {
               value={(apiLimitCount / MAX_FREE_API_LIMIT) * 100}
             />
           </div>
-          <Button variant="premium" className="mt-2 w-full">
+          <Button
+            variant="premium"
+            className="mt-2 w-full"
+            onClick={proModal.onOpen}
+          >
             <Zap className="h-4 w-4 fill-white" />
             Upgrade
           </Button>
