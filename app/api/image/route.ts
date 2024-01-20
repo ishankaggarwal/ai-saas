@@ -1,6 +1,7 @@
 import { auth } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
+import {increaseFreeAPILimit, checkApiLimit} from "@/lib/api-limit";
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
@@ -19,6 +20,9 @@ export async function POST(
         if(!openai.apiKey) return NextResponse.json({status:500, error: "API key not configured"});
         if(!prompt) return NextResponse.json({status:400, error: "Prompt is required"});
 
+        const freeTrail = await checkApiLimit();
+        if(!freeTrail) return new NextResponse("Free Trial has expired",{status:403});
+
         const response = await openai.images.generate({
             model: "dall-e-2",
             prompt,
@@ -26,6 +30,7 @@ export async function POST(
             size: resolution,           
         });
 
+        await increaseFreeAPILimit();
         return NextResponse.json(response.data);
 
     } catch (error) {
