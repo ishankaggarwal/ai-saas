@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { ModalProvider } from "@/components/ModalProvider";
 import ToasterProvider from "@/components/ToasterProvider";
 import CrispProvider from "@/components/CrispProvider";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,6 +30,7 @@ export default function RootLayout({
           <div className="h-screen">
             <ModalProvider />
             <ToasterProvider />
+            <Analytics />
             {children}
           </div>
         </body>
