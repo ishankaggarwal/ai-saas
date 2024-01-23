@@ -15,6 +15,7 @@ import Empty from "@/components/Empty";
 import Loader from "@/components/Loader";
 import { formSchema } from "./constants";
 import { useProModal } from "@/hooks/useProModal";
+import toast from "react-hot-toast";
 
 function MusicPage() {
   const proModal = useProModal();
@@ -41,6 +42,8 @@ function MusicPage() {
     } catch (error: any) {
       if (error?.response?.status === 403) {
         proModal.onOpen();
+      } else {
+        toast.error("Something went wrong");
       }
       form.reset();
     } finally {

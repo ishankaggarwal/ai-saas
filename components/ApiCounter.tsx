@@ -8,7 +8,13 @@ import { Button } from "@/components/ui/button";
 import { Zap } from "lucide-react";
 import { useProModal } from "@/hooks/useProModal";
 
-function ApiCounter({ apiLimitCount }: { apiLimitCount: number }) {
+function ApiCounter({
+  apiLimitCount = 0,
+  isPro = false,
+}: {
+  apiLimitCount: number;
+  isPro: boolean;
+}) {
   const proModal = useProModal();
   const [mounted, setMounted] = useState(false);
 
@@ -17,6 +23,7 @@ function ApiCounter({ apiLimitCount }: { apiLimitCount: number }) {
   }, []);
 
   if (!mounted) return null;
+  if (isPro) return null;
   return (
     <div className="flex justify-center items-center p-10">
       <Card className="bg-white/10 border-0">

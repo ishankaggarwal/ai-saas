@@ -19,6 +19,7 @@ import { cn } from "@/lib/utils";
 import UserAvatar from "@/components/UserAvatar";
 import BotAvatar from "@/components/BotAvatar";
 import { useProModal } from "@/hooks/useProModal";
+import toast from "react-hot-toast";
 
 function ConversationPage() {
   const proModal = useProModal();
@@ -49,6 +50,8 @@ function ConversationPage() {
     } catch (error: any) {
       if (error?.response?.status === 403) {
         proModal.onOpen();
+      } else {
+        toast.error("Something went wrong");
       }
       form.reset();
     } finally {

@@ -2,6 +2,7 @@ import { auth } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 import Replicate from "replicate";
 import {increaseFreeAPILimit, checkApiLimit} from "@/lib/api-limit";
+import { checkSubscription } from "@/lib/subscription";
 
 const replicate = new Replicate({
   auth: process.env.REPLICATE_API_KEY,
@@ -20,7 +21,8 @@ export async function POST(
         if(!values.prompt) return NextResponse.json({status:400, error: "Prompt is required"});
 
         const freeTrail = await checkApiLimit();
-        if(!freeTrail) return new NextResponse("Free Trial has expired",{status:403});
+        const isPro = await checkSubscription();
+        if(!freeTrail && !isPro) return new NextResponse("Free Trial has expired",{status:403});
 
         const response = await replicate.run(
           "cjwbw/damo-text-to-video:1e205ea73084bd17a0a3b43396e49ba0d6bc2e754e9283b2df49fad2dcf95755",
@@ -31,7 +33,9 @@ export async function POST(
           }
         );
         
-        await increaseFreeAPILimit();
+        if(isPro){
+          await increaseFreeAPILimit();
+      }
         return NextResponse.json(response);
 
     } catch (error) {
