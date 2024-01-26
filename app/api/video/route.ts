@@ -33,7 +33,7 @@ export async function POST(
           }
         );
         
-        if(isPro){
+        if(!isPro){
           await increaseFreeAPILimit();
       }
         return NextResponse.json(response);
